@@ -1,5 +1,5 @@
 
-# 🚀 flutter_graphql_client
+# 🚀 flutter_graphql_client_plus
 
 A simple, extendable GraphQL client for Flutter applications with support for authentication, token refreshing, and ActionCable-based subscriptions (ideal for Rails backends).
 
@@ -19,7 +19,7 @@ Add the package to your `pubspec.yaml`:
 
 
     dependencies:
-      flutter_graphql_client: ^latest 
+      flutter_graphql_client_plus: ^latest 
 
 
 
