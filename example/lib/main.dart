@@ -1,75 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_graphql_client/flutter_graphql_client.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize the client
   FlutterGraphqlClient.init(
-      tokenExpiryErrorCode: "UNAUTHENTICATED",
-      token:Token(
-          accessToken: "",
-          refreshToken: ""),
-      graphQlEndPoint: "",
-      refreshTokenHandler: (token) {
-        return Future.value(Token(accessToken: '', refreshToken: ''));
-      });
-  runApp(const MyApp());
+    graphQlEndPoint: "https://your-api.com/graphql",
+    webSocketUrl: "wss://your-api.com/cable",
+    tokenExpiryErrorCode: "TOKEN_EXPIRED",
+    token: Token(accessToken: "initialAccessToken", refreshToken: "initialRefreshToken"),
+    refreshTokenHandler: (refreshToken) async {
+      // Call refresh token API here
+      print("Refreshing token with: $refreshToken");
+
+      // Return new tokens (simulate network call)
+      await Future.delayed(Duration(seconds: 1));
+      return Token(accessToken: "newAccessToken", refreshToken: "newRefreshToken");
+    },
+  );
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  final GraphQLService client = FlutterGraphqlClient.instance.graphQLService!;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-
-  Future<void> _incrementCounter() async {
-    ResponseModel res=await FlutterGraphqlClient.instance.graphQLService!.query("queries");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              'Test',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      title: 'GraphQL Demo',
+      home: Scaffold(
+        appBar: AppBar(title: Text('GraphQL Demo')),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: _performQuery,
+            child: Text('Run Query'),
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _performQuery() async {
+    final response = await client.query(
+      '''
+      query {
+        user {
+          id
+          name
+        }
+      }
+      ''',
+    );
+
+    if (response.error != null) {
+      print("Error: ${response.error!.message}");
+    } else {
+      print("User: ${response.data}");
+    }
   }
 }
