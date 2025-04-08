@@ -9,14 +9,20 @@ void main() async {
     graphQlEndPoint: "https://your-api.com/graphql",
     webSocketUrl: "wss://your-api.com/cable",
     tokenExpiryErrorCode: "TOKEN_EXPIRED",
-    token: Token(accessToken: "initialAccessToken", refreshToken: "initialRefreshToken"),
+    token: Token(
+      accessToken: "initialAccessToken",
+      refreshToken: "initialRefreshToken",
+    ),
     refreshTokenHandler: (refreshToken) async {
       // Call refresh token API here
       print("Refreshing token with: $refreshToken");
 
       // Return new tokens (simulate network call)
       await Future.delayed(Duration(seconds: 1));
-      return Token(accessToken: "newAccessToken", refreshToken: "newRefreshToken");
+      return Token(
+        accessToken: "newAccessToken",
+        refreshToken: "newRefreshToken",
+      );
     },
   );
 
@@ -43,16 +49,14 @@ class MyApp extends StatelessWidget {
   }
 
   void _performQuery() async {
-    final response = await client.query(
-      '''
+    final response = await client.query('''
       query {
         user {
           id
           name
         }
       }
-      ''',
-    );
+      ''');
 
     if (response.error != null) {
       print("Error: ${response.error!.message}");

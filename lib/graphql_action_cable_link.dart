@@ -16,10 +16,7 @@ enum ConnectionState {
 typedef GetAuthToken = FutureOr<String> Function();
 
 class _ActionCableEvent {
-  _ActionCableEvent({
-    required this.state,
-    required this.request,
-  });
+  _ActionCableEvent({required this.state, required this.request});
 
   final Request request;
   final ConnectionState state;
@@ -99,14 +96,11 @@ class ActionCableLink extends Link {
         case ConnectionState.Disconnected:
         case ConnectionState.CannotConnect:
         case ConnectionState.ConnectionLost:
-          _retryTimer ??= Timer(
-            retryDuration,
-            () {
-              _connect(event.request, connectionStateController);
-              _retryTimer!.cancel();
-              _retryTimer = null;
-            },
-          );
+          _retryTimer ??= Timer(retryDuration, () {
+            _connect(event.request, connectionStateController);
+            _retryTimer!.cancel();
+            _retryTimer = null;
+          });
 
           break;
         default:
@@ -140,8 +134,10 @@ class ActionCableLink extends Link {
     );
   }
 
-  void _connect(Request request,
-      StreamController<_ActionCableEvent> connectStateController) async {
+  void _connect(
+    Request request,
+    StreamController<_ActionCableEvent> connectStateController,
+  ) async {
     _cable = ActionCable.connect(
       url,
       headers: await _getHeaders(),
@@ -153,13 +149,17 @@ class ActionCableLink extends Link {
       onCannotConnect: () {
         connectStateController.add(
           _ActionCableEvent(
-              request: request, state: ConnectionState.CannotConnect),
+            request: request,
+            state: ConnectionState.CannotConnect,
+          ),
         );
       },
       onConnectionLost: () {
         connectStateController.add(
           _ActionCableEvent(
-              request: request, state: ConnectionState.ConnectionLost),
+            request: request,
+            state: ConnectionState.ConnectionLost,
+          ),
         );
       },
     );
