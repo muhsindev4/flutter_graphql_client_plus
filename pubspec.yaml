@@ -1,5 +1,6 @@
 name: flutter_graphql_client
-description: "A new Flutter project."
+description: "A lightweight GraphQL client wrapper for Flutter that supports standard GraphQL queries, mutations, 
+  subscriptions over ActionCable, token-based authentication with automatic token refresh handling."
 version: 0.0.1
 homepage: https://github.com/planetmedia-australia/flutter-graphql-client.git
 
