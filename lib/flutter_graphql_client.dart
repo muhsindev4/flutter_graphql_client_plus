@@ -1,12 +1,12 @@
-library flutter_graphql_client;
+library flutter_graphql_client_plus;
 
-export 'package:flutter_graphql_client/responds.dart';
-export 'package:flutter_graphql_client/error.dart';
-export 'package:flutter_graphql_client/graphql_request_service.dart';
-export 'package:flutter_graphql_client/token.dart';
+export 'package:flutter_graphql_client_plus/responds.dart';
+export 'package:flutter_graphql_client_plus/error.dart';
+export 'package:flutter_graphql_client_plus/graphql_request_service.dart';
+export 'package:flutter_graphql_client_plus/token.dart';
 
 import 'dart:developer';
-import 'package:flutter_graphql_client/token.dart';
+import 'package:flutter_graphql_client_plus/token.dart';
 
 import 'graphql_request_service.dart';
 
