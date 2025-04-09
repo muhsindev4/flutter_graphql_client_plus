@@ -39,7 +39,7 @@ class FlutterGraphqlClient {
     String? accessToken,
     Token? token,
     String? tokenExpiryErrorCode,
-    required Future<Token> Function(String refreshToken) refreshTokenHandler,
+    required Future<Token?> Function(String refreshToken) refreshTokenHandler,
   }) {
     _instance ??= FlutterGraphqlClient._internal(
       graphQlEndPoint: graphQlEndPoint,
