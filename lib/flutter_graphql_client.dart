@@ -3,15 +3,7 @@ export 'package:flutter_graphql_client_plus/error.dart';
 export 'package:flutter_graphql_client_plus/graphql_request_service.dart';
 export 'package:flutter_graphql_client_plus/token.dart';
 export 'package:flutter_graphql_client_plus/graphql_action_cable_link.dart';
-export 'package:graphql/src/cache/cache.dart';
-export 'package:graphql/src/core/core.dart';
-export 'package:graphql/src/core/query_result.dart';
-export 'package:graphql/src/core/policies.dart';
-export 'package:graphql/src/exceptions.dart';
-export 'package:graphql/src/graphql_client.dart';
-export 'package:graphql/src/links/links.dart';
-export 'package:graphql/src/utilities/helpers.dart'
-    show gql, optimizedDeepEquals;
+export 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'dart:developer';
 import 'package:flutter_graphql_client_plus/token.dart';

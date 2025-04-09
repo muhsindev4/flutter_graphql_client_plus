@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'flutter_graphql_client.dart';
-import 'graphql_action_cable_link.dart';
 
 class GraphQLService {
   late GraphQLClient _client;
