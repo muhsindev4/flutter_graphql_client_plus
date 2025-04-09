@@ -94,7 +94,7 @@ class GraphQLService {
     Map<String, dynamic>? variables,
   }) {
     log(
-      "🛰️ Subscribing: ${_getOperationName(subscription)}\nToken: ${_config.token!.accessToken}",
+      "🛰️ Subscribing: ${_getOperationName(subscription)}",
     );
 
     return _client.subscribe(
