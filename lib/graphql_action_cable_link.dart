@@ -4,12 +4,11 @@ import 'package:action_cable/action_cable.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 enum ConnectionState {
-  New,
-  Connected,
-  Subscribed,
-  Disconnected,
-  CannotConnect,
-  ConnectionLost,
+  connected,
+  subscribed,
+  disconnected,
+  cannotConnect,
+  connectionLost,
 }
 
 /// A function that returns the token for authentication
@@ -90,12 +89,12 @@ class ActionCableLink extends Link {
 
     connectionStateController.stream.listen((event) {
       switch (event.state) {
-        case ConnectionState.Connected:
+        case ConnectionState.connected:
           _subscribed(event.request, response);
           break;
-        case ConnectionState.Disconnected:
-        case ConnectionState.CannotConnect:
-        case ConnectionState.ConnectionLost:
+        case ConnectionState.disconnected:
+        case ConnectionState.cannotConnect:
+        case ConnectionState.connectionLost:
           _retryTimer ??= Timer(retryDuration, () {
             _connect(event.request, connectionStateController);
             _retryTimer!.cancel();
@@ -143,14 +142,14 @@ class ActionCableLink extends Link {
       headers: await _getHeaders(),
       onConnected: () {
         connectStateController.add(
-          _ActionCableEvent(request: request, state: ConnectionState.Connected),
+          _ActionCableEvent(request: request, state: ConnectionState.connected),
         );
       },
       onCannotConnect: () {
         connectStateController.add(
           _ActionCableEvent(
             request: request,
-            state: ConnectionState.CannotConnect,
+            state: ConnectionState.cannotConnect,
           ),
         );
       },
@@ -158,7 +157,7 @@ class ActionCableLink extends Link {
         connectStateController.add(
           _ActionCableEvent(
             request: request,
-            state: ConnectionState.ConnectionLost,
+            state: ConnectionState.connectionLost,
           ),
         );
       },

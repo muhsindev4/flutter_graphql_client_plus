@@ -2,8 +2,9 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ErrorModel {
   final String message;
+  final ErrorType? code;
 
-  ErrorModel({required this.message});
+  ErrorModel({required this.message, this.code});
 
   factory ErrorModel.fromGraphQLException(OperationException exception) {
     if (exception.graphqlErrors.isNotEmpty) {
@@ -15,3 +16,5 @@ class ErrorModel {
     }
   }
 }
+
+enum ErrorType { cancelRequest }

@@ -15,7 +15,9 @@ class FlutterGraphqlClient {
 
   String? tokenExpiryErrorCode;
 
-  final Future<Token?> Function(String refreshToken) refreshTokenHandler;
+  final Future<Token?> Function(String refreshToken, GraphQLService service)
+  refreshTokenHandler;
+  final Function(GraphQLService service)? onTokenRefreshFailed;
 
   static FlutterGraphqlClient? _instance;
 
@@ -27,6 +29,7 @@ class FlutterGraphqlClient {
     this.token,
     this.tokenExpiryErrorCode,
     required this.refreshTokenHandler,
+    required this.onTokenRefreshFailed,
   }) {
     log("🚀 FlutterGraphqlClient initialized with endpoint: $graphQlEndPoint");
     if (webSocketUrl != null) log("🧩 WebSocket URL set: $webSocketUrl");
@@ -39,7 +42,12 @@ class FlutterGraphqlClient {
     String? accessToken,
     Token? token,
     String? tokenExpiryErrorCode,
-    required Future<Token?> Function(String refreshToken) refreshTokenHandler,
+    Function(GraphQLService service)? onTokenRefreshFailed,
+    required Future<Token?> Function(
+      String refreshToken,
+      GraphQLService service,
+    )
+    refreshTokenHandler,
   }) {
     _instance ??= FlutterGraphqlClient._internal(
       graphQlEndPoint: graphQlEndPoint,
@@ -47,6 +55,7 @@ class FlutterGraphqlClient {
       token: token,
       tokenExpiryErrorCode: tokenExpiryErrorCode,
       refreshTokenHandler: refreshTokenHandler,
+      onTokenRefreshFailed: onTokenRefreshFailed,
     );
     _instance!.graphQLService = GraphQLService();
     _instance!.graphQLService!.initializeClient();

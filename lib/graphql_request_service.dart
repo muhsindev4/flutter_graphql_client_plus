@@ -9,6 +9,19 @@ class GraphQLService {
   final FlutterGraphqlClient _config = FlutterGraphqlClient.instance;
   Completer<void>? _tokenRefreshCompleter;
 
+  bool _isCancelled = false;
+  bool get isCancelled => _isCancelled;
+
+  void cancelAllRequests() {
+    _isCancelled = true;
+    log("🛑 All ongoing and future requests are cancelled.");
+  }
+
+  void resumeRequests() {
+    _isCancelled = false;
+    log("✅ Requests resumed.");
+  }
+
   void initializeClient() {
     log("🧰 Initializing GraphQL client...");
     final httpLink = HttpLink(
@@ -98,6 +111,16 @@ class GraphQLService {
     required Future<QueryResult> Function() executor,
     required Future<ResponseModel> Function() retryOnTokenExpiry,
   }) async {
+    if (_isCancelled) {
+      log("⚠️ Request $operationName cancelled.");
+      return ResponseModel(
+        data: null,
+        error: ErrorModel(
+          message: 'Request cancelled',
+          code: ErrorType.cancelRequest,
+        ),
+      );
+    }
     try {
       log("📥 Executing $operationType: $operationName");
       final result = await executor();
@@ -123,6 +146,7 @@ class GraphQLService {
             try {
               final newToken = await _config.refreshTokenHandler(
                 _config.token!.refreshToken,
+                this,
               );
 
               if (newToken != null) {
@@ -132,6 +156,7 @@ class GraphQLService {
                 initializeClient();
               } else {
                 log("❌ Token refresh failed.");
+                _config.onTokenRefreshFailed?.call(this);
               }
             } catch (e) {
               log("🔥 Error during token refresh: $e");

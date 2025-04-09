@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_graphql_client_plus/flutter_graphql_client.dart';
 
@@ -13,16 +15,17 @@ void main() async {
       accessToken: "initialAccessToken",
       refreshToken: "initialRefreshToken",
     ),
-    refreshTokenHandler: (refreshToken) async {
-      // Call refresh token API here
-      print("Refreshing token with: $refreshToken");
-
+    refreshTokenHandler: (refreshToken, service) async {
       // Return new tokens (simulate network call)
       await Future.delayed(Duration(seconds: 1));
       return Token(
         accessToken: "newAccessToken",
         refreshToken: "newRefreshToken",
       );
+    },
+    onTokenRefreshFailed: (GraphQLService service) {
+      service.cancelAllRequests();
+      service.resumeRequests();
     },
   );
 
@@ -31,6 +34,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final GraphQLService client = FlutterGraphqlClient.instance.graphQLService!;
+
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +64,9 @@ class MyApp extends StatelessWidget {
       ''');
 
     if (response.error != null) {
-      print("Error: ${response.error!.message}");
+      log("Error: ${response.error!.message}");
     } else {
-      print("User: ${response.data}");
+      log("User: ${response.data}");
     }
   }
 }
