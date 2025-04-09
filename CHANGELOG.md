@@ -1,4 +1,4 @@
-## 1.0.2
+## 1.0.3
 
 ### Changed
 - Refactored and structured `FlutterGraphqlClient` and `GraphQLService` for better modularity and initialization.
