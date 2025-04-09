@@ -7,6 +7,7 @@ import 'graphql_action_cable_link.dart';
 class GraphQLService {
   late GraphQLClient _client;
   final FlutterGraphqlClient _config = FlutterGraphqlClient.instance;
+  Completer<void>? _tokenRefreshCompleter;
 
   void initializeClient() {
     log("🧰 Initializing GraphQL client...");
@@ -110,17 +111,37 @@ class GraphQLService {
         final errorCode = error.extensions?['code'];
 
         if (errorCode == _config.tokenExpiryErrorCode) {
-          log("🔑 Token expired for $operationName. Attempting to refresh...");
+          log("🔑 Token expired for $operationName.");
 
-          final newToken = await _config.refreshTokenHandler(
-            _config.token!.refreshToken,
-          );
-          _config.updateAccessToken(newToken.accessToken);
-          _config.updateRefreshToken(newToken.refreshToken);
+          if (_tokenRefreshCompleter != null) {
+            // Another refresh is in progress
+            log("⏳ Waiting for ongoing token refresh...");
+            await _tokenRefreshCompleter!.future;
+          } else {
+            _tokenRefreshCompleter = Completer();
 
-          log("✅ Token refreshed. Retrying $operationName...");
-          initializeClient();
+            try {
+              final newToken = await _config.refreshTokenHandler(
+                _config.token!.refreshToken,
+              );
 
+              if (newToken != null) {
+                _config.updateAccessToken(newToken.accessToken);
+                _config.updateRefreshToken(newToken.refreshToken);
+                log("✅ Token refreshed successfully.");
+                initializeClient();
+              } else {
+                log("❌ Token refresh failed.");
+              }
+            } catch (e) {
+              log("🔥 Error during token refresh: $e");
+            } finally {
+              _tokenRefreshCompleter?.complete();
+              _tokenRefreshCompleter = null;
+            }
+          }
+
+          log("🔁 Retrying $operationName after token refresh...");
           return retryOnTokenExpiry();
         }
 

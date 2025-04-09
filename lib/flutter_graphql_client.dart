@@ -1,5 +1,3 @@
-library flutter_graphql_client_plus;
-
 export 'package:flutter_graphql_client_plus/responds.dart';
 export 'package:flutter_graphql_client_plus/error.dart';
 export 'package:flutter_graphql_client_plus/graphql_request_service.dart';
@@ -17,7 +15,7 @@ class FlutterGraphqlClient {
 
   String? tokenExpiryErrorCode;
 
-  final Future<Token> Function(String refreshToken) refreshTokenHandler;
+  final Future<Token?> Function(String refreshToken) refreshTokenHandler;
 
   static FlutterGraphqlClient? _instance;
 
