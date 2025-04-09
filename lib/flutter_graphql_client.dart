@@ -10,7 +10,8 @@ export 'package:graphql/src/core/policies.dart';
 export 'package:graphql/src/exceptions.dart';
 export 'package:graphql/src/graphql_client.dart';
 export 'package:graphql/src/links/links.dart';
-export 'package:graphql/src/utilities/helpers.dart' show gql, optimizedDeepEquals;
+export 'package:graphql/src/utilities/helpers.dart'
+    show gql, optimizedDeepEquals;
 
 import 'dart:developer';
 import 'package:flutter_graphql_client_plus/token.dart';
