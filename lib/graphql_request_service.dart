@@ -127,8 +127,13 @@ class GraphQLService {
           "⚠️ GraphQL $operationType error in $operationName:\n${result.exception}",
         );
 
-        final error = result.exception!.graphqlErrors.first;
-        final errorCode = error.extensions?['code'];
+        var error;
+        String? errorCode;
+        if((result.exception?.graphqlErrors??[]).isNotEmpty){
+          error = result.exception!.graphqlErrors.first;
+          errorCode = error.extensions?['code'];
+        }
+
 
         if (errorCode == _config.tokenExpiryErrorCode) {
           log("🔑 Token expired for $operationName.");
