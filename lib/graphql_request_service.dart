@@ -32,7 +32,7 @@ class GraphQLService {
 
     final socketUrl =
         _config.webSocketUrl != null
-            ? "${_config.webSocketUrl}?token=${_config.token!.accessToken}"
+            ? "${_config.webSocketUrl}"
             : "";
 
     if (_config.webSocketUrl != null) {
