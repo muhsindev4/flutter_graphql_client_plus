@@ -31,9 +31,7 @@ class GraphQLService {
     );
 
     final socketUrl =
-        _config.webSocketUrl != null
-            ? "${_config.webSocketUrl}"
-            : "";
+        _config.webSocketUrl != null ? "${_config.webSocketUrl}" : "";
 
     if (_config.webSocketUrl != null) {
       log("📡 ActionCable WebSocket initialized: $socketUrl");
@@ -129,11 +127,10 @@ class GraphQLService {
 
         var error;
         String? errorCode;
-        if((result.exception?.graphqlErrors??[]).isNotEmpty){
+        if ((result.exception?.graphqlErrors ?? []).isNotEmpty) {
           error = result.exception!.graphqlErrors.first;
           errorCode = error.extensions?['code'];
         }
-
 
         if (errorCode == _config.tokenExpiryErrorCode) {
           log("🔑 Token expired for $operationName.");
