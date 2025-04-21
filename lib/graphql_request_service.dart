@@ -121,9 +121,10 @@ class GraphQLService {
       final result = await executor();
 
       if (result.hasException) {
-
         if (result.exception?.linkException is CacheMissException) {
-          log("⚠️ Cache Miss detected. Consider adjusting query or cache settings.");
+          log(
+            "⚠️ Cache Miss detected. Consider adjusting query or cache settings.",
+          );
           return ResponseModel(
             data: null,
             error: ErrorModel.fromGraphQLException(result.exception!),
