@@ -60,7 +60,7 @@ class GraphQLService {
             QueryOptions(
               document: gql(queries),
               variables: variables ?? {},
-              fetchPolicy: FetchPolicy.networkOnly,
+              fetchPolicy: FetchPolicy.noCache,
             ),
           ),
       retryOnTokenExpiry: () => query(queries, variables: variables),
@@ -79,7 +79,7 @@ class GraphQLService {
             MutationOptions(
               document: gql(mutation),
               variables: variables ?? {},
-              fetchPolicy: FetchPolicy.networkOnly,
+              fetchPolicy: FetchPolicy.noCache,
             ),
           ),
       retryOnTokenExpiry: () => mutate(mutation, variables: variables),
@@ -121,10 +121,18 @@ class GraphQLService {
       final result = await executor();
 
       if (result.hasException) {
+
+        if (result.exception?.linkException is CacheMissException) {
+          log("⚠️ Cache Miss detected. Consider adjusting query or cache settings.");
+          return ResponseModel(
+            data: null,
+            error: ErrorModel.fromGraphQLException(result.exception!),
+          );
+        }
+
         log(
           "⚠️ GraphQL $operationType error in $operationName:\n${result.exception}",
         );
-
         var error;
         String? errorCode;
         if ((result.exception?.graphqlErrors ?? []).isNotEmpty) {

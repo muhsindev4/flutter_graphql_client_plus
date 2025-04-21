@@ -1,4 +1,7 @@
-
+## 1.0.8
+- Added log for `FetchPolicy.noCache`
+## 1.0.7
+- Added `FetchPolicy.noCache`
 ## 1.0.6
 - Patch work
 ## 1.0.5
