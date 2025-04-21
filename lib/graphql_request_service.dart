@@ -30,7 +30,8 @@ class GraphQLService {
       },
     );
 
-    final socketUrl = _config.webSocketUrl != null ? "${_config.webSocketUrl}" : "";
+    final socketUrl =
+        _config.webSocketUrl != null ? "${_config.webSocketUrl}" : "";
 
     if (_config.webSocketUrl != null) {
       log("📡 ActionCable WebSocket initialized: $socketUrl");
@@ -62,7 +63,8 @@ class GraphQLService {
               fetchPolicy: FetchPolicy.noCache,
             ),
           ),
-      retryOnTokenExpiry: () => query(queries, variables: variables), variable: variables,
+      retryOnTokenExpiry: () => query(queries, variables: variables),
+      variable: variables,
     );
   }
 
@@ -81,7 +83,8 @@ class GraphQLService {
               fetchPolicy: FetchPolicy.noCache,
             ),
           ),
-      retryOnTokenExpiry: () => mutate(mutation, variables: variables), variable: variables,
+      retryOnTokenExpiry: () => mutate(mutation, variables: variables),
+      variable: variables,
     );
   }
 
@@ -89,8 +92,9 @@ class GraphQLService {
     String subscription, {
     Map<String, dynamic>? variables,
   }) {
-
-    log("🛰️ Subscribing: ${_getOperationName(subscription)} Variables: ${jsonEncode(variables)}");
+    log(
+      "🛰️ Subscribing: ${_getOperationName(subscription)} Variables: ${jsonEncode(variables)}",
+    );
 
     return _client.subscribe(
       SubscriptionOptions(
@@ -103,7 +107,7 @@ class GraphQLService {
   Future<ResponseModel> _execute({
     required String operationName,
     required String operationType,
-    required  Map<String, dynamic>? variable,
+    required Map<String, dynamic>? variable,
     required Future<QueryResult> Function() executor,
     required Future<ResponseModel> Function() retryOnTokenExpiry,
   }) async {
@@ -118,7 +122,9 @@ class GraphQLService {
       );
     }
     try {
-      log("📥 Executing $operationType: $operationName \n Variables: ${jsonEncode(variable)}");
+      log(
+        "📥 Executing $operationType: $operationName \n Variables: ${jsonEncode(variable)}",
+      );
       final result = await executor();
 
       if (result.hasException) {

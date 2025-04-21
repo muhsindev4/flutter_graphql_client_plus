@@ -1,3 +1,6 @@
+## 1.0.10
+- added `updateWebSocketUrl` function
+
 ## 1.0.9
 - Patch work
 

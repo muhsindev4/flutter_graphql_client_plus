@@ -11,7 +11,7 @@ import 'graphql_request_service.dart';
 
 class FlutterGraphqlClient {
   final String graphQlEndPoint;
-  final String? webSocketUrl;
+  String? webSocketUrl;
   Token? token;
 
   String? tokenExpiryErrorCode;
@@ -91,6 +91,11 @@ class FlutterGraphqlClient {
       this.token = this.token!.copyWith(refreshToken: token);
     }
 
+    graphQLService!.initializeClient();
+  }
+
+  void updateWebSocketUrl(String webSocketUrl) {
+    this.webSocketUrl = webSocketUrl;
     graphQLService!.initializeClient();
   }
 }
