@@ -1,4 +1,5 @@
-import 'error.dart';
+import 'package:flutter_graphql_client_plus/flutter_graphql_client_plus.dart';
+
 
 class ResponseModel {
   final dynamic data;

@@ -1,3 +1,17 @@
+## 1.0.12
+### Added
+- Added debugging tool
+
+## 1.0.11
+### Added
+- Added time log for request tracking.
+
+### Fixed
+- Missing subscription cleanup: ensured `StreamSubscription` is exposed and can be canceled to prevent memory leaks.
+- Improved lifecycle management for subscriptions.
+- Changed architecture
+
+
 ## 1.0.10
 - added `updateWebSocketUrl` function
 

@@ -17,4 +17,4 @@ class ErrorModel {
   }
 }
 
-enum ErrorType { cancelRequest }
+enum ErrorType { cancelRequest,networkError }

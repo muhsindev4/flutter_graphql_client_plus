@@ -1,20 +1,18 @@
-export 'package:flutter_graphql_client_plus/responds.dart';
-export 'package:flutter_graphql_client_plus/error.dart';
-export 'package:flutter_graphql_client_plus/graphql_request_service.dart';
-export 'package:flutter_graphql_client_plus/token.dart';
-export 'package:flutter_graphql_client_plus/graphql_action_cable_link.dart';
-export 'package:graphql_flutter/graphql_flutter.dart';
+
 
 import 'dart:developer';
-import 'package:flutter_graphql_client_plus/token.dart';
-import 'graphql_request_service.dart';
+import 'package:flutter_graphql_client_plus/src/models/token.dart';
+import '../debugger/debug_web_socket.dart';
+import 'request_service.dart';
 
 class FlutterGraphqlClient {
   final String graphQlEndPoint;
   String? webSocketUrl;
+  String? debugWebSocketUrl;
   Token? token;
-
   String? tokenExpiryErrorCode;
+
+
 
   final Future<Token?> Function(String refreshToken, GraphQLService service)
   refreshTokenHandler;
@@ -27,6 +25,7 @@ class FlutterGraphqlClient {
   FlutterGraphqlClient._internal({
     required this.graphQlEndPoint,
     this.webSocketUrl,
+    this.debugWebSocketUrl,
     this.token,
     this.tokenExpiryErrorCode,
     required this.refreshTokenHandler,
@@ -40,19 +39,23 @@ class FlutterGraphqlClient {
   factory FlutterGraphqlClient.init({
     required String graphQlEndPoint,
     String? webSocketUrl,
+    String? debugWebSocketUrl,
     String? accessToken,
     Token? token,
     String? tokenExpiryErrorCode,
     Function(GraphQLService service)? onTokenRefreshFailed,
     required Future<Token?> Function(
-      String refreshToken,
-      GraphQLService service,
-    )
+        String refreshToken,
+        GraphQLService service,
+        )
     refreshTokenHandler,
   }) {
+
+
     _instance ??= FlutterGraphqlClient._internal(
       graphQlEndPoint: graphQlEndPoint,
       webSocketUrl: webSocketUrl,
+      debugWebSocketUrl: debugWebSocketUrl,
       token: token,
       tokenExpiryErrorCode: tokenExpiryErrorCode,
       refreshTokenHandler: refreshTokenHandler,
@@ -60,6 +63,11 @@ class FlutterGraphqlClient {
     );
     _instance!.graphQLService = GraphQLService();
     _instance!.graphQLService!.initializeClient();
+
+    if(debugWebSocketUrl!=null){
+      DebugWebSocket().connect(debugWebSocketUrl);
+    }
+
     return _instance!;
   }
 
