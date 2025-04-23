@@ -17,14 +17,17 @@ A simple, extendable GraphQL client for Flutter applications with support for au
 
 ## 🧪 Debugging Tool Support (New!)
 
-We now support live debugging of your GraphQL requests with the Flutter GraphQL Plus Tool.
+We now support live debugging of your GraphQL requests with the  [**Flutter GraphQL Plus Tool**](https://github.com/muhsindev4/flutter_graphql_plus_tool).
 
-When enabled, this tool creates a WebSocket debug server that logs all GraphQL queries, mutations, and subscriptions sent from your app — helping you visualize and debug real-time traffic.
+When enabled, this tool creates a  **WebSocket debug server**  that logs all GraphQL queries, mutations, and subscriptions sent from your app — helping you visualize and debug real-time traffic.
 
 ### 🔌 Usage with Debug Tool
-Clone and run the debug tool app locally or on your desired machine.
-The tool creates a WebSocket server (e.g., ws://152.162.57.112:4040).
-Point your Flutter app to the debug tool using the debugWebSocketUrl:
+
+1.  Clone and run the  [debug tool app](https://github.com/muhsindev4/flutter_graphql_plus_tool)  locally or on your desired machine.
+
+2.  The tool creates a WebSocket server (e.g.,  `ws://152.162.57.112:4040`).
+
+3.  Point your Flutter app to the debug tool using the  `debugWebSocketUrl`:
 
       FlutterGraphqlClient.init(
       graphQlEndPoint: Const.graphQlEndPoint,
@@ -35,9 +38,9 @@ Point your Flutter app to the debug tool using the debugWebSocketUrl:
         return authController.generateToken(service: service);
       },
     );
-Once set up, every GraphQL request from your app will be logged in real-time inside the debug tool app.
+    Once set up,  **every GraphQL request**  from your app will be logged in real-time inside the debug tool app.
 
-✅ Ideal for inspecting queries, tracking headers, responses, and debugging token issues.
+> ✅ Ideal for inspecting queries, tracking headers, responses, and debugging token issues.
 
 
 ## 🛠 Installation
