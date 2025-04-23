@@ -1,3 +1,6 @@
+## 2.0.1
+- Patch work
+
 ## 2.0.0
 ### Added
 - Added debugging tool
