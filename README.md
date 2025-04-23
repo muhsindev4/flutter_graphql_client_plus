@@ -26,16 +26,15 @@ Clone and run the debug tool app locally or on your desired machine.
 The tool creates a WebSocket server (e.g., ws://152.162.57.112:4040).
 Point your Flutter app to the debug tool using the debugWebSocketUrl:
 
-`FlutterGraphqlClient.init(
-    graphQlEndPoint: Const.graphQlEndPoint,
-    debugWebSocketUrl: "ws://152.162.57.112:4040", // 👈 Debug server
-    tokenExpiryErrorCode: "UNAUTHENTICATED",
-    token: Token(accessToken: "your_token", refreshToken: "your_refresh_token"),
-    refreshTokenHandler: (refreshToken, GraphQLService service) {
-    return authController.generateToken(service: service);
-   },  
-);`
-
+      FlutterGraphqlClient.init(
+      graphQlEndPoint: Const.graphQlEndPoint,
+      debugWebSocketUrl: "ws://152.162.57.112:4040", // 👈 Debug server
+      tokenExpiryErrorCode: "UNAUTHENTICATED",
+      token: Token(accessToken: "your_token", refreshToken: "your_refresh_token"),
+      refreshTokenHandler: (refreshToken, GraphQLService service) {
+        return authController.generateToken(service: service);
+      },
+    );
 Once set up, every GraphQL request from your app will be logged in real-time inside the debug tool app.
 
 ✅ Ideal for inspecting queries, tracking headers, responses, and debugging token issues.
