@@ -29,7 +29,7 @@ class DebugWebSocket {
       }
       final payload = jsonEncode(data.toJson());
       _channel?.sink.add(payload);
-      log("📤 Sent GraphQL request log: $payload");
+      log("📤 Sent GraphQL request log");
     } catch (e) {
       log("⚠️ Debug Debug WebSocket send error: $e");
     }
