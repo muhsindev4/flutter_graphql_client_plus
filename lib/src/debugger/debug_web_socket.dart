@@ -23,7 +23,7 @@ class DebugWebSocket {
 
   void sendRequestInfo(GraphQLRequestLog data) {
     try {
-      if (_channel == null ) {
+      if (_channel == null) {
         log("🚫 Cannot send: Debug WebSocket is not connected.");
         return;
       }
@@ -37,7 +37,7 @@ class DebugWebSocket {
 
   void dispose() {
     try {
-      if (_channel == null ) {
+      if (_channel == null) {
         log("🚫 Cannot dispose: Debug WebSocket is not connected.");
         return;
       }

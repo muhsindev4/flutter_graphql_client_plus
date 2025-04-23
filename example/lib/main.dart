@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_graphql_client_plus/flutter_graphql_client_plus.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

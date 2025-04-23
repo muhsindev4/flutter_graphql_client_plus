@@ -6,11 +6,10 @@ import 'package:flutter_graphql_client_plus/flutter_graphql_client_plus.dart';
 import '../debugger/debug_web_socket.dart';
 import '../models/graphql_request_log.dart';
 
-
 class GraphQLService {
   late GraphQLClient _client;
   final FlutterGraphqlClient _config = FlutterGraphqlClient.instance;
-  final DebugWebSocket _debugWebSocket=DebugWebSocket();
+  final DebugWebSocket _debugWebSocket = DebugWebSocket();
   Completer<void>? _tokenRefreshCompleter;
 
   bool _isCancelled = false;
@@ -59,7 +58,7 @@ class GraphQLService {
   }) async {
     return _execute(
       query: queries,
-      operationType: OperationType.query ,
+      operationType: OperationType.query,
       executor:
           () => _client.query(
             QueryOptions(
@@ -78,8 +77,8 @@ class GraphQLService {
     Map<String, dynamic>? variables,
   }) async {
     return _execute(
-      query:mutation,
-      operationType:OperationType.mutation ,
+      query: mutation,
+      operationType: OperationType.mutation,
       executor:
           () => _client.mutate(
             MutationOptions(
@@ -94,12 +93,12 @@ class GraphQLService {
   }
 
   Future<StreamSubscription<QueryResult>> subscribe(
-      String subscription, {
-        Map<String, dynamic>? variables,
-        required void Function(QueryResult result) onData,
-        void Function()? onDone,
-        void Function(Object error)? onError,
-      }) async {
+    String subscription, {
+    Map<String, dynamic>? variables,
+    required void Function(QueryResult result) onData,
+    void Function()? onDone,
+    void Function(Object error)? onError,
+  }) async {
     log(
       "🛰️ Subscribing: ${_getOperationName(subscription)} Variables: ${jsonEncode(variables)}",
     );
@@ -121,7 +120,6 @@ class GraphQLService {
     return subscriptionStream;
   }
 
-
   Future<ResponseModel> _execute({
     required String query,
     required OperationType operationType,
@@ -129,7 +127,7 @@ class GraphQLService {
     required Future<QueryResult> Function() executor,
     required Future<ResponseModel> Function() retryOnTokenExpiry,
   }) async {
-    String operationName=_getOperationName(query);
+    String operationName = _getOperationName(query);
     if (_isCancelled) {
       log("⚠️ Request $operationName cancelled.");
       return ResponseModel(
@@ -149,29 +147,30 @@ class GraphQLService {
       final result = await executor();
       stopwatch.stop();
 
-
-      if(_config.debugWebSocketUrl!=null){
+      if (_config.debugWebSocketUrl != null) {
         GraphQLRequestLog requestLog = GraphQLRequestLog(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
           operationType: operationType,
           operationName: operationName,
-          query:query,
+          query: query,
           variables: variable,
           responseData: result.data,
-          errorMessage: result.hasException ? result.exception.toString() : null,
+          errorMessage:
+              result.hasException ? result.exception.toString() : null,
           durationMs: stopwatch.elapsedMilliseconds,
         );
 
         _debugWebSocket.sendRequestInfo(requestLog);
       }
 
-
       if (result.hasException) {
         final exception = result.exception;
 
         // ❌ No retry for network failures
         if (exception?.linkException != null) {
-          log("📡 Network error in $operationName: ${exception?.linkException}");
+          log(
+            "📡 Network error in $operationName: ${exception?.linkException}",
+          );
           return ResponseModel(
             data: null,
             error: ErrorModel(
@@ -230,17 +229,20 @@ class GraphQLService {
         );
       }
 
-      log("✅ $operationType $operationName took ${stopwatch.elapsedMilliseconds}ms completed successfully.");
+      log(
+        "✅ $operationType $operationName took ${stopwatch.elapsedMilliseconds}ms completed successfully.",
+      );
       return ResponseModel(data: result.data, error: null);
     } catch (e, stackTrace) {
-      log("🔥 Unexpected $operationType error in $operationName: $e\n$stackTrace");
+      log(
+        "🔥 Unexpected $operationType error in $operationName: $e\n$stackTrace",
+      );
       return ResponseModel(
         data: null,
         error: ErrorModel(message: 'Unexpected error: $e'),
       );
     }
   }
-
 
   String _getOperationName(String raw) {
     return raw

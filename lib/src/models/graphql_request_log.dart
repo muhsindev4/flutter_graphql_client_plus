@@ -7,10 +7,9 @@ extension OperationTypeExtension on OperationType {
 }
 
 extension StringFormatter on String {
-
-  OperationType get  fromString {
+  OperationType get fromString {
     return OperationType.values.firstWhere(
-          (e) => e.name.toLowerCase() == toLowerCase(),
+      (e) => e.name.toLowerCase() == toLowerCase(),
       orElse: () => OperationType.query,
     );
   }
@@ -44,13 +43,15 @@ class GraphQLRequestLog {
       id: json['id'],
       operationType: json['operationType'].toString().fromString,
       operationName: json['operationName'],
-      variables: json['variables'] != null
-          ? Map<String, dynamic>.from(json['variables'])
-          : null,
+      variables:
+          json['variables'] != null
+              ? Map<String, dynamic>.from(json['variables'])
+              : null,
       responseData: json['responseData'],
       errorMessage: json['errorMessage'],
       durationMs: json['durationMs'],
-      timestamp: DateTime.parse(json['timestamp']), query: json['query'],
+      timestamp: DateTime.parse(json['timestamp']),
+      query: json['query'],
     );
   }
 
@@ -82,27 +83,28 @@ class GraphQLRequestLog {
     DateTime? timestamp,
   }) {
     return GraphQLRequestLog(
-        id: id ?? this.id,
-        operationType: operationType ?? this.operationType,
-        operationName: operationName ?? this.operationName,
-        variables: variables ?? this.variables,
-        responseData: responseData ?? this.responseData,
-        errorMessage: errorMessage ?? this.errorMessage,
-        durationMs: durationMs ?? this.durationMs,
-        timestamp: timestamp ?? this.timestamp, query:  query ?? this.query
+      id: id ?? this.id,
+      operationType: operationType ?? this.operationType,
+      operationName: operationName ?? this.operationName,
+      variables: variables ?? this.variables,
+      responseData: responseData ?? this.responseData,
+      errorMessage: errorMessage ?? this.errorMessage,
+      durationMs: durationMs ?? this.durationMs,
+      timestamp: timestamp ?? this.timestamp,
+      query: query ?? this.query,
     );
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is GraphQLRequestLog &&
-              runtimeType == other.runtimeType &&
-              id == other.id &&
-              operationType == other.operationType &&
-              operationName == other.operationName &&
-              durationMs == other.durationMs &&
-              timestamp == other.timestamp;
+      other is GraphQLRequestLog &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          operationType == other.operationType &&
+          operationName == other.operationName &&
+          durationMs == other.durationMs &&
+          timestamp == other.timestamp;
 
   @override
   int get hashCode =>

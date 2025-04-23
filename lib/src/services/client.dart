@@ -1,5 +1,3 @@
-
-
 import 'dart:developer';
 import 'package:flutter_graphql_client_plus/src/models/token.dart';
 import '../debugger/debug_web_socket.dart';
@@ -11,8 +9,6 @@ class FlutterGraphqlClient {
   String? debugWebSocketUrl;
   Token? token;
   String? tokenExpiryErrorCode;
-
-
 
   final Future<Token?> Function(String refreshToken, GraphQLService service)
   refreshTokenHandler;
@@ -45,13 +41,11 @@ class FlutterGraphqlClient {
     String? tokenExpiryErrorCode,
     Function(GraphQLService service)? onTokenRefreshFailed,
     required Future<Token?> Function(
-        String refreshToken,
-        GraphQLService service,
-        )
+      String refreshToken,
+      GraphQLService service,
+    )
     refreshTokenHandler,
   }) {
-
-
     _instance ??= FlutterGraphqlClient._internal(
       graphQlEndPoint: graphQlEndPoint,
       webSocketUrl: webSocketUrl,
@@ -64,7 +58,7 @@ class FlutterGraphqlClient {
     _instance!.graphQLService = GraphQLService();
     _instance!.graphQLService!.initializeClient();
 
-    if(debugWebSocketUrl!=null){
+    if (debugWebSocketUrl != null) {
       DebugWebSocket().connect(debugWebSocketUrl);
     }
 
