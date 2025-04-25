@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter_graphql_client_plus/flutter_graphql_client_plus.dart';
+import 'package:flutter_graphql_client_plus/src/utils/string_format.dart';
 
 import '../debugger/debug_web_socket.dart';
 import '../models/graphql_request_log.dart';
@@ -31,6 +33,7 @@ class GraphQLService {
       _config.graphQlEndPoint,
       defaultHeaders: {
         'Authorization': 'Bearer ${_config.token?.accessToken ?? ''}',
+        'User-Agent':"${Platform.operatingSystem.toString().capitalizeFirst}/${Platform.version}"
       },
     );
 
