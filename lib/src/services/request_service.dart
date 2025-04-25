@@ -33,7 +33,8 @@ class GraphQLService {
       _config.graphQlEndPoint,
       defaultHeaders: {
         'Authorization': 'Bearer ${_config.token?.accessToken ?? ''}',
-        'User-Agent':"${Platform.operatingSystem.toString().capitalizeFirst}/${Platform.version}"
+        'User-Agent':
+            "${Platform.operatingSystem.toString().capitalizeFirst}/${Platform.version}",
       },
     );
 
