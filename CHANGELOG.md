@@ -1,3 +1,6 @@
+## 2.0.4
+- Debugger tool improvements
+
 ## 2.0.3
 - Patch work
 

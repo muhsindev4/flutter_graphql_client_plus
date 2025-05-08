@@ -17,6 +17,8 @@ class GraphQLService {
   bool _isCancelled = false;
   bool get isCancelled => _isCancelled;
 
+  HttpLink? _httpLink;
+
   void cancelAllRequests() {
     _isCancelled = true;
     log("🛑 All ongoing and future requests are cancelled.");
@@ -29,12 +31,14 @@ class GraphQLService {
 
   void initializeClient() {
     log("🧰 Initializing GraphQL client...");
-    final httpLink = HttpLink(
+    final requestHeaders = {
+      'Authorization': 'Bearer ${_config.token?.accessToken ?? ''}',
+      'User-Agent':
+          "${Platform.isAndroid ? "Android" : "IOS"}/${Platform.version}",
+    };
+    _httpLink = HttpLink(
       _config.graphQlEndPoint,
-      defaultHeaders: {
-        'Authorization': 'Bearer ${_config.token?.accessToken ?? ''}',
-        'User-Agent':"${Platform.isAndroid?"Android":"IOS"}/${Platform.version}",
-      },
+      defaultHeaders: requestHeaders,
     );
 
     final socketUrl =
@@ -49,7 +53,7 @@ class GraphQLService {
     final link = Link.split(
       (request) => request.isSubscription,
       actionCableLink,
-      httpLink,
+      _httpLink!,
     );
 
     _client = GraphQLClient(cache: GraphQLCache(), link: link);
@@ -158,6 +162,7 @@ class GraphQLService {
           query: query,
           variables: variable,
           responseData: result.data,
+          header: _httpLink!.defaultHeaders,
           errorMessage:
               result.hasException ? result.exception.toString() : null,
           durationMs: stopwatch.elapsedMilliseconds,
