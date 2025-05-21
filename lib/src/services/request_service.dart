@@ -33,8 +33,7 @@ class GraphQLService {
     log("🧰 Initializing GraphQL client...");
     final requestHeaders = {
       'Authorization': 'Bearer ${_config.token?.accessToken ?? ''}',
-      'User-Agent':
-          "${Platform.isAndroid ? "Android" : "IOS"}/${Platform.version}",
+      'User-Agent': Platform.operatingSystem,
     };
     _httpLink = HttpLink(
       _config.graphQlEndPoint,
